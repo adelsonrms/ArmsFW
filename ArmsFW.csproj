@@ -1,0 +1,89 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <AssemblyName>ArmsFW</AssemblyName>
+    <RootNamespace>ArmsFW</RootNamespace>
+    <Version>2.2023.0603.1</Version>
+    <Authors>Adelson RM Silva</Authors>
+    <Description>Versão do framework ArmsFW atualizado para Net 7.0 - v3</Description>
+    <Copyright>ARMS 2023</Copyright>
+    <PackageProjectUrl>https://github.com/adelsonrms/armsfw</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/adelsonrms/armsfw</RepositoryUrl>
+    <RepositoryType>Github</RepositoryType>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <Title>ARMS FW - Funcionalidades</Title>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath></OutputPath>
+    <NoWarn>1701;1702;NU1701;NU1702;NU1591;CS1998;CS1573;CS1572;CS1574;CS1587;NETSDK1138;CS4014;CS0219;CS0169</NoWarn>
+    <Optimize>False</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>C:\vs\armsfw\release\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Microsoft\**" />
+    <Compile Remove="Migrations\**" />
+    <EmbeddedResource Remove="Microsoft\**" />
+    <EmbeddedResource Remove="Migrations\**" />
+    <None Remove="Microsoft\**" />
+    <None Remove="Migrations\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+
+    <!-- Pacotes nativos do Identity NET5 (5.0.17) -->
+    <PackageReference Include="Azure.Communication.Email" Version="1.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.17" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.17" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
+
+    <!-- Pacotes nativos do EntityFramework NET5 (5.0.17) -->
+    <PackageReference Include="EntityFramework" Version="6.4.4" />
+    <PackageReference Include="QRCoder" Version="1.4.3" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.17" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.17" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.17">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+
+    <!-- Pacotes nativos do ASPNET MVC-->
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
+    <PackageReference Include="System.Text.Json" Version="6.0.4" />
+
+    <!-- Pacotes do MySql-->
+    <PackageReference Include="MySql.EntityFrameworkCore" Version="5.0.17" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.4" />
+
+    <!-- pacotes de terceiros -->
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="BitMiracle.Docotic.Pdf" Version="8.5.13147" />
+    <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
+    <PackageReference Include="Dapper" Version="2.0.123" />
+    <PackageReference Include="EPPlus" Version="6.0.4" />
+    <PackageReference Include="itext7" Version="7.2.2" />
+    <PackageReference Include="itextsharp" Version="5.5.13.3" />
+    <PackageReference Include="Microsoft.Graph.Core" Version="2.0.8" />
+    <PackageReference Include="Newtonsoft.json" Version="13.0.1" />
+    <PackageReference Include="RestSharp" Version="107.3.0" />
+    <PackageReference Include="SendGrid" Version="9.27.0" />
+    <PackageReference Include="Twilio" Version="5.75.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Email\Azure\" />
+  </ItemGroup>
+  
+</Project>
