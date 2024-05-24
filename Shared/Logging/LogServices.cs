@@ -6,12 +6,16 @@ using System.Reflection;
 using System.Threading.Tasks;
 using ArmsFW.Services.Session;
 using ArmsFW.Services.Shared.Settings;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
+using Microsoft.AspNetCore.Http;
+using ArmsFW.Web.Http;
 
 namespace ArmsFW.Services.Logging
 {
     public static class LogExceptionsExtensions
     {
         public static async Task<string> Logar(this Exception ex) => LogServices.GravarLog($"{ex.TargetSite.Name} >> {ex.Message}").Result.Mensagem;
+        public static async Task<string> Logar(this Exception ex, string msg, string ctx_origem = null) => LogServices.GravarLog($"{ex.TargetSite.Name} >> {msg} \n Erro : {ex.Message}", (ctx_origem?? ex.TargetSite.Name)).Result.Mensagem;
     }
     /// <summary>
     /// classe de serviços de log, separação e composição de relatórios de erros baseados na exception e em sua stack
@@ -19,12 +23,46 @@ namespace ArmsFW.Services.Logging
     public class LogServices
     {
         #region Logs de Texto
+        public static string Diretorio => $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\_logs";
+        public static string AppLogFile => Diretorio + @"\log.json";
+
         public string SessionID = App.SessionID;
         public string UserID => SessionService.GetUser().UserName;
 
         public static void Debug(string mensagem) => System.Diagnostics.Debug.WriteLine($"{DateTime.Now} - {mensagem}");
 
         public static async Task<EntradaLog> GravarLog(string logMessage, string contexto = "", string fileLog = "", bool criarNovo = false, bool backup = true)
+        {
+            try
+            {
+                LogServices.Debug($"{contexto} | {logMessage}");
+
+                var diretorio = Aplicacao.Diretorio;
+
+                contexto = ((contexto == "") ? "Aplicação" : contexto);
+                if (string.IsNullOrEmpty(fileLog))
+                {
+                    fileLog = AppLogFile;
+                    if (string.IsNullOrEmpty(fileLog)) fileLog = $@"{diretorio}\_logs\log.json";
+                }
+                else
+                {
+                    //Se nao tem barra, entao so vem o nome do arquivo, sava no diretorio raiz de logs
+                    if (!fileLog.Contains("\\")) fileLog = $@"{diretorio}\{fileLog}";
+                }
+
+                return await GravarEntradaDeLog(logMessage:logMessage, contexto: contexto, fileLog: fileLog, criarNovo, backup); 
+
+            }
+            catch (Exception ex)
+            {
+                ex.Logar();
+            }
+
+            return await Task.FromResult<EntradaLog>(new EntradaLog { Mensagem="Falha ao gravar o Log" });
+        }
+
+        public static async Task<EntradaLog> GravarEntradaDeLog(string logMessage, string contexto = "", string fileLog = "", bool criarNovo = false, bool backup = true)
         {
             //Direciona para o modelo de log Json
 
@@ -34,7 +72,6 @@ namespace ArmsFW.Services.Logging
 
             return entrada;
         }
-
 
         public static async Task<EntradaLog> GravarLog(EntradaLog log, string fileLog = "", bool criarNovo = false, bool backup = true)
         {
@@ -407,6 +444,11 @@ namespace ArmsFW.Services.Logging
         {
             Origem = "LogView";
             IdLog = "--";
+            if (HttpContextInstance.Current != null)
+            {
+                IdGrupoLog = HttpContextInstance.Current.Request.PegarValorDoHeader("Request-Id");
+            }
+
         }
         public EntradaLog(string msg, string origem = "", string detalhes = ""):this()
         {
@@ -415,12 +457,18 @@ namespace ArmsFW.Services.Logging
             Detalhes = detalhes;
             SessaoID = App.SessionID;
             UsuarioDaSessao = App.UsuarioDaSessao;
+
+            if (HttpContextInstance.Current!=null)
+            {
+                IdGrupoLog = HttpContextInstance.Current.Request.PegarValorDoHeader("Request-Id");
+            }
         }
 
         public int Linha { get; set; }
         public DateTime DataHora { get; set; } = DateTime.Now;
         public string Origem { get; set; }
         public string IdLog { get; set; }
+        public string IdGrupoLog { get; set; }
         public string Mensagem { get; set; }
         public string Detalhes { get; set; }
         public string SessaoID { get; set; }

@@ -11,6 +11,7 @@ using ArmsFW.Services.Logging;
 using System.ComponentModel;
 using ArmsFW.Core;
 using ArmsFW.Core.Types;
+using System.Reflection;
 
 namespace ArmsFW.Services.Email
 {
@@ -52,17 +53,32 @@ namespace ArmsFW.Services.Email
 
         private readonly NotificacaoProvider _mailSettings;
 
+        /// <summary>
+        /// Inicializa a classe com as configurações via Injação de Dependencia
+        /// </summary>
+        /// <param name="emailSettings">Opções Recebido via ConfigureServices do appsettings</param>
         public EmailService(IOptions<NotificacaoOptions> emailSettings) : this()
         {
-            _mailSettings = emailSettings.Value.NotificacaoProviders.FirstOrDefault(x => x.Nome == emailSettings.Value.ServicoDeEmail);
-            _smtpClient = new SmtpClient(_mailSettings.Host, _mailSettings.Port);
+            if (emailSettings.Value.NotificacaoProviders?.Count>0)
+            {
+                _mailSettings = emailSettings.Value.NotificacaoProviders.FirstOrDefault(x => x.Nome == emailSettings.Value.ServicoDeEmail);
+                _smtpClient = new SmtpClient(_mailSettings.Host, _mailSettings.Port);
+            }
         }
 
         public EmailService()
         {
             this.LogFile = $@"{Aplicacao.Diretorio}\_logs\log.json";
-            var notificacaoOptios = AppSettings.GetSection<NotificacaoOptions>("NotificacaoOptions");
+            var notificacaoOptios = AppSettings.GetSection<NotificacaoOptions>("NotificacaoOptions") ?? new NotificacaoOptions { NotificacaoProviders  = new System.Collections.Generic.List<NotificacaoProvider>()};
             _mailSettings = notificacaoOptios.NotificacaoProviders.FirstOrDefault(x => x.Nome == notificacaoOptios.ServicoDeEmail);
+
+            if (!notificacaoOptios.Ativo)
+            {
+                LogServices.GravarLog(
+                    "O serviço de notificações por email está desativado", 
+                    $"({Assembly.GetCallingAssembly().ManifestModule.Name}) > {this.GetType().FullName}"
+                );
+            }
 
             if (_mailSettings != null)
             {

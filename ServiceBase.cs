@@ -1,12 +1,10 @@
-﻿using app.core.Domain;
-using ArmsFW.Lib.Web.Json;
+﻿using ArmsFW.AutoMapperExtensions;
 using ArmsFW.Services.Logging;
 using ArmsFW.Services.Session;
 using ArmsFW.Services.Shared;
 using ArmsFW.Services.Shared.Pesquisa;
 using ArmsFW.Services.Shared.Settings;
 using ArmsFW.Web.Http;
-using ArmsFW.AutoMapperExtensions;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;

@@ -7,10 +7,10 @@ namespace ArmsFW.Services.Session
 		public string Id { get; set; }
 
 		public string Name { get; set; }
-        public string UserName { get; internal set; }
-        public string Nome { get; internal set; }
-		public string Perfil { get; internal set; }
-		public string Token { get; internal set; }
+        public string UserName { get;  set; }
+        public string Nome { get;  set; }
+		public string Perfil { get;  set; }
+		public string Token { get;  set; }
 
         public override string ToString()
 		{

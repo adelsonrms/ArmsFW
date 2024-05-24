@@ -5,6 +5,7 @@ using ArmsFW.Services.Shared.Settings;
 using Azure;
 using Azure.Communication.Email;
 using Microsoft.Extensions.Options;
+using SendGrid.Helpers.Mail;
 using System;
 using System.IO;
 using System.Linq;
@@ -56,11 +57,15 @@ namespace ArmsFW.Services.Email
             this.LogFile = $@"{Aplicacao.Diretorio}\_logs\log.json";
             var notificacaoOptios = AppSettings.GetSection<NotificacaoOptions>("NotificacaoOptions");
             Settings = notificacaoOptios;
-            _mailSettings = notificacaoOptios.NotificacaoProviders.FirstOrDefault(x => x.Nome == notificacaoOptios.ServicoDeEmail);
 
-            if (_mailSettings!=null)
+            if (notificacaoOptios!=null)
             {
-                emailClient = new EmailClient(_mailSettings.Host);
+                _mailSettings = notificacaoOptios.NotificacaoProviders.FirstOrDefault(x => x.Nome == notificacaoOptios.ServicoDeEmail);
+
+                if (_mailSettings != null)
+                {
+                    emailClient = new EmailClient(_mailSettings.Host);
+                }
             }
         }
 
