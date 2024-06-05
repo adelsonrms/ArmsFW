@@ -17,7 +17,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCopyrightAttribute("ARMS 2023")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute("Versão do framework ArmsFW atualizado para Net 7.0 - v3")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("2.2023.603.1")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("2.2023.0603.1+b5522d150562f75acdd301a79bfb02c4bc56d1a1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("2.2023.0603.1+18abb3c6d65965db7473bcd080b03c1695019120")]
 [assembly: System.Reflection.AssemblyProductAttribute("ArmsFW")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ArmsFW")]
 [assembly: System.Reflection.AssemblyVersionAttribute("2.2023.603.1")]
