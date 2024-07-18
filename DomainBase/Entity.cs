@@ -1,3 +1,4 @@
+using app.core.Domain;
 using Portal.Domain.Enums;
 using System;
 using System.ComponentModel.DataAnnotations;

@@ -32,51 +32,55 @@ namespace ArmsFW.Lib.Web.HttpRest
 			
 			try
 			{
+                //TODO: ARMS, 13/07 - Update Framework - Necessário usar #if condicionais para cada versão do netcore. Os malditos trocam as assinaturas e quebra tudo
+                //https://stackoverflow.com/questions/1449925/is-it-possible-to-conditionally-compile-to-net-framework-version
 
-				RestRequest req = new RestRequest(base.EndPoint, GetMethod());
-                //RestResponse<TResponse> webResponse = new RestResponse<TResponse>(req); //NET7 (recebe um construtor obrigatorio)
-                RestResponse<TResponse> webResponse = new RestResponse<TResponse>(); //NET5 (sem construtor)
+                RestRequest req = new RestRequest(base.EndPoint, GetMethod());
+                #if NET5_0
+                                  RestResponse<TResponse> webResponse = new RestResponse<TResponse>(); //NET5 (sem construtor) 
+                #else
+                                RestResponse<TResponse> webResponse = new RestResponse<TResponse>(req); //NET7 (recebe um construtor obrigatorio)
+                #endif
+
+                //
+                //foreach (KeyValuePair<string, string> parameter in base.HeadersParams)
+                //{
+                //	req.AddHeader(parameter.Key, parameter.Value);
+                //}
+
+                //foreach (KeyValuePair<string, string> parameter in base.BodyStringParams)
+                //{
+                //	req.AddBody(parameter.Key, parameter.Value);
+                //}
+
+                //RestSharp.ParameterType tp;
+
+                //switch (type)
+                //{
+                //	case ParameterType.GetOrPost:
+                //		tp = RestSharp.ParameterType.GetOrPost;
+                //		break;
+                //	case ParameterType.UrlSegment:
+                //		tp = RestSharp.ParameterType.UrlSegment;
+                //		break;
+                //	case ParameterType.HttpHeader:
+                //		tp = RestSharp.ParameterType.HttpHeader;
+                //		break;
+                //	case ParameterType.RequestBody:
+                //		tp = RestSharp.ParameterType.RequestBody;
+                //		break;
+                //	case ParameterType.QueryString:
+                //		tp = RestSharp.ParameterType.QueryString;
+                //		break;
+                //	default:
+                //		tp = RestSharp.ParameterType.HttpHeader;
+                //		break;
+                //}
+
+                //req.AddParameter(parameter.Key, parameter.Value, tp);
 
 
-
-				//foreach (KeyValuePair<string, string> parameter in base.HeadersParams)
-				//{
-				//	req.AddHeader(parameter.Key, parameter.Value);
-				//}
-
-				//foreach (KeyValuePair<string, string> parameter in base.BodyStringParams)
-				//{
-				//	req.AddBody(parameter.Key, parameter.Value);
-				//}
-
-				//RestSharp.ParameterType tp;
-
-				//switch (type)
-				//{
-				//	case ParameterType.GetOrPost:
-				//		tp = RestSharp.ParameterType.GetOrPost;
-				//		break;
-				//	case ParameterType.UrlSegment:
-				//		tp = RestSharp.ParameterType.UrlSegment;
-				//		break;
-				//	case ParameterType.HttpHeader:
-				//		tp = RestSharp.ParameterType.HttpHeader;
-				//		break;
-				//	case ParameterType.RequestBody:
-				//		tp = RestSharp.ParameterType.RequestBody;
-				//		break;
-				//	case ParameterType.QueryString:
-				//		tp = RestSharp.ParameterType.QueryString;
-				//		break;
-				//	default:
-				//		tp = RestSharp.ParameterType.HttpHeader;
-				//		break;
-				//}
-
-				//req.AddParameter(parameter.Key, parameter.Value, tp);
-
-
-				AdicionaParametros(req, base.HeadersParams, ParameterType.HttpHeader);
+                AdicionaParametros(req, base.HeadersParams, ParameterType.HttpHeader);
 				AdicionaParametros(req, base.QueryStringParams);
 				AdicionaParametros(req, base.BodyStringParams, ParameterType.RequestBody);
 

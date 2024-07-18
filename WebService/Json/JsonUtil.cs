@@ -166,7 +166,9 @@ public static class JSON
 			if (File.Exists(json)) strConteudo = File.ReadAllText(json);
 
 			if (IsJson(strConteudo))
-			{
+            {
+                strConteudo = strConteudo.Replace(@"\", @"\\");
+
 				return JsonConvert.DeserializeObject<TObject>(strConteudo);
 			}
 		}

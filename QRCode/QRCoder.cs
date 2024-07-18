@@ -23,10 +23,16 @@ namespace ArmsFW.Tools
             {
                 var qrGenerator = new QRCodeGenerator();
                 var qrCodeData = qrGenerator.CreateQrCode(texto, QRCodeGenerator.ECCLevel.Q);
-                var qrCode = new QRCode(qrCodeData);
-                var qrCodeImage = qrCode.GetGraphic(10);
 
-                return ResultBase<QrResultado>.Sucesso("Código QR gerado com sucesso", new QrResultado { Imagem = qrCodeImage, Bytes = ConverterParaBytes(qrCodeImage) });
+                //Codigo que funciona na versão 1.4 para net50. Nao funciona para net6 em diante
+                //var qrCode = new QRCode(qrCodeData);
+                //var qrCodeImage = qrCode.GetGraphic(10);
+                //return ResultBase<QrResultado>.Sucesso("Código QR gerado com sucesso", new QrResultado { Imagem = qrCodeImage, Bytes = ConverterParaBytes(qrCodeImage) });
+
+                var qrCode = new BitmapByteQRCode(qrCodeData);
+                var qrCodeImage = qrCode.GetGraphic(10);
+                return ResultBase<QrResultado>.Sucesso("Código QR gerado com sucesso", new QrResultado { Bytes = qrCodeImage });
+
             }
             catch (Exception ex)
             {

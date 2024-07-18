@@ -1,0 +1,16 @@
+C:\vs\armsfw\release\net5.0\ArmsFW.deps.json
+C:\vs\armsfw\release\net5.0\ArmsFW.runtimeconfig.json
+C:\vs\armsfw\release\net5.0\ArmsFW.runtimeconfig.dev.json
+C:\vs\armsfw\release\net5.0\ArmsFW.dll
+C:\vs\armsfw\release\net5.0\ArmsFW.pdb
+C:\data\dev\source\github\consoc\ArmsFW\obj\Release\net5.0\ArmsFW.csproj.AssemblyReference.cache
+C:\data\dev\source\github\consoc\ArmsFW\obj\Release\net5.0\ArmsFW.GeneratedMSBuildEditorConfig.editorconfig
+C:\data\dev\source\github\consoc\ArmsFW\obj\Release\net5.0\ArmsFW.AssemblyInfoInputs.cache
+C:\data\dev\source\github\consoc\ArmsFW\obj\Release\net5.0\ArmsFW.AssemblyInfo.cs
+C:\data\dev\source\github\consoc\ArmsFW\obj\Release\net5.0\ArmsFW.csproj.CoreCompileInputs.cache
+C:\data\dev\source\github\consoc\ArmsFW\obj\Release\net5.0\ArmsFW.sourcelink.json
+C:\data\dev\source\github\consoc\ArmsFW\obj\Release\net5.0\ArmsFW.dll
+C:\data\dev\source\github\consoc\ArmsFW\obj\Release\net5.0\refint\ArmsFW.dll
+C:\data\dev\source\github\consoc\ArmsFW\obj\Release\net5.0\ArmsFW.pdb
+C:\data\dev\source\github\consoc\ArmsFW\obj\Release\net5.0\ArmsFW.genruntimeconfig.cache
+C:\data\dev\source\github\consoc\ArmsFW\obj\Release\net5.0\ref\ArmsFW.dll

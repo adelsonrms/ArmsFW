@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ArmsFW.Services.Session;
 using ArmsFW.Services.Shared.Settings;
@@ -16,6 +17,10 @@ namespace ArmsFW.Services.Logging
     {
         public static async Task<string> Logar(this Exception ex) => LogServices.GravarLog($"{ex.TargetSite.Name} >> {ex.Message}").Result.Mensagem;
         public static async Task<string> Logar(this Exception ex, string msg, string ctx_origem = null) => LogServices.GravarLog($"{ex.TargetSite.Name} >> {msg} \n Erro : {ex.Message}", (ctx_origem?? ex.TargetSite.Name)).Result.Mensagem;
+
+
+
+
     }
     /// <summary>
     /// classe de serviços de log, separação e composição de relatórios de erros baseados na exception e em sua stack
@@ -30,6 +35,11 @@ namespace ArmsFW.Services.Logging
         public string UserID => SessionService.GetUser().UserName;
 
         public static void Debug(string mensagem) => System.Diagnostics.Debug.WriteLine($"{DateTime.Now} - {mensagem}");
+
+        public static async Task<EntradaLog> GravarLogErro(string logMessage, string contexto = "", string fileLog = "", bool criarNovo = false, bool backup = true) => await GravarLog($"|erro|{logMessage}", contexto);
+        public static async Task<EntradaLog> GravarLogInfo(string logMessage, string contexto = "", string fileLog = "", bool criarNovo = false, bool backup = true) => await GravarLog($"|info|{logMessage}", contexto);
+        public static async Task<EntradaLog> GravarLogSucesso(string logMessage, string contexto = "", string fileLog = "", bool criarNovo = false, bool backup = true) => await GravarLog($"|sucesso|{logMessage}", contexto);
+
 
         public static async Task<EntradaLog> GravarLog(string logMessage, string contexto = "", string fileLog = "", bool criarNovo = false, bool backup = true)
         {
@@ -132,9 +142,11 @@ namespace ArmsFW.Services.Logging
 
             try
             {
-                var conteudo = File.ReadAllText(fileLog);
 
-                var json_log_view = $"{{\"Arquivo\": \"{""}\",\"Linhas\": [{conteudo}]}}";
+                var conteudo = File.ReadAllText(fileLog);
+                conteudo = $"[{Regex.Replace(conteudo, @"[\r\n]+", "")}]";
+
+                var json_log_view = $"{{\"Arquivo\": \"{""}\",\"Linhas\": {conteudo}}}";
 
                 lv = JSON.Carregar<LogView>(json_log_view);
 

@@ -1,5 +1,4 @@
-﻿using ArmsFW.Core;
-using ArmsFW.Services.Shared.Settings;
+﻿using ArmsFW.Services.Shared.Settings;
 using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -15,6 +14,10 @@ namespace ArmsFW.AutoMapperExtensions
     {
         public static IServiceCollection RegistrarAutoMapper(this IServiceCollection services, params Type[] profileAssemblyMarkerTypes)
         {
+
+            //TODO : Arms, 13/07 - Nota de Migração : NET7 > NET8
+            //Na versaão NET5 o metodo services.AddAutoMapper() esta presente somente na lib AutoMapper.Extensions
+            //Na versão NET8 esse metodo ja esta nativo na lib do AutoMapper. Necessario remover o pacote AutoMapperExtensions
             services.AddAutoMapper(profileAssemblyMarkerTypes);
 
             var ass = new List<System.Reflection.Assembly>() { Aplicacao.Assembly };

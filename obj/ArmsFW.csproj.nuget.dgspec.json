@@ -1,32 +1,33 @@
 {
   "format": 1,
   "restore": {
-    "C:\\data\\dev\\source\\github\\portal-multi-tenant\\ArmsFW\\ArmsFW.csproj": {}
+    "C:\\data\\dev\\source\\github\\ArmsFW\\ArmsFW.csproj": {}
   },
   "projects": {
-    "C:\\data\\dev\\source\\github\\portal-multi-tenant\\ArmsFW\\ArmsFW.csproj": {
+    "C:\\data\\dev\\source\\github\\ArmsFW\\ArmsFW.csproj": {
       "version": "2.2023.603.1",
       "restore": {
-        "projectUniqueName": "C:\\data\\dev\\source\\github\\portal-multi-tenant\\ArmsFW\\ArmsFW.csproj",
+        "projectUniqueName": "C:\\data\\dev\\source\\github\\ArmsFW\\ArmsFW.csproj",
         "projectName": "ArmsFW",
-        "projectPath": "C:\\data\\dev\\source\\github\\portal-multi-tenant\\ArmsFW\\ArmsFW.csproj",
+        "projectPath": "C:\\data\\dev\\source\\github\\ArmsFW\\ArmsFW.csproj",
         "packagesPath": "C:\\Users\\adelson\\.nuget\\packages\\",
-        "outputPath": "C:\\data\\dev\\source\\github\\portal-multi-tenant\\ArmsFW\\obj\\",
+        "outputPath": "C:\\data\\dev\\source\\github\\ArmsFW\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\adelson\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net5.0"
+          "net8.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net5.0": {
-            "targetAlias": "net5.0",
+          "net8.0": {
+            "targetAlias": "net8.0",
             "projectReferences": {}
           }
         },
@@ -46,40 +47,28 @@
         }
       },
       "frameworks": {
-        "net5.0": {
-          "targetAlias": "net5.0",
+        "net8.0": {
+          "targetAlias": "net8.0",
           "dependencies": {
             "AutoMapper": {
               "target": "Package",
-              "version": "[11.0.1, )"
-            },
-            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
-              "target": "Package",
-              "version": "[11.0.0, )"
+              "version": "[13.0.1, )"
             },
             "Azure.Communication.Email": {
               "target": "Package",
-              "version": "[1.0.0, )"
+              "version": "[1.0.1, )"
             },
             "Ben.Demystifier": {
               "target": "Package",
               "version": "[0.4.1, )"
             },
-            "BitMiracle.Docotic.Pdf": {
-              "target": "Package",
-              "version": "[8.5.13147, )"
-            },
             "Dapper": {
               "target": "Package",
-              "version": "[2.0.123, )"
+              "version": "[2.1.35, )"
             },
             "EPPlus": {
               "target": "Package",
-              "version": "[6.0.4, )"
-            },
-            "EntityFramework": {
-              "target": "Package",
-              "version": "[6.4.4, )"
+              "version": "[7.2.1, )"
             },
             "Microsoft.AspNetCore.Identity": {
               "target": "Package",
@@ -87,11 +76,11 @@
             },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[5.0.17, )"
+              "version": "[8.0.7, )"
             },
             "Microsoft.AspNetCore.Identity.UI": {
               "target": "Package",
-              "version": "[5.0.17, )"
+              "version": "[8.0.7, )"
             },
             "Microsoft.AspNetCore.Mvc.ViewFeatures": {
               "target": "Package",
@@ -99,65 +88,65 @@
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[5.0.17, )"
+              "version": "[8.0.7, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[5.0.17, )"
+              "version": "[8.0.7, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[5.0.17, )"
+              "version": "[8.0.7, )"
             },
             "Microsoft.Extensions.Configuration": {
               "target": "Package",
-              "version": "[6.0.1, )"
+              "version": "[8.0.0, )"
             },
             "Microsoft.Extensions.Configuration.Binder": {
               "target": "Package",
-              "version": "[6.0.0, )"
+              "version": "[8.0.2, )"
             },
             "Microsoft.Extensions.DependencyInjection": {
               "target": "Package",
-              "version": "[6.0.0, )"
+              "version": "[8.0.0, )"
             },
             "Microsoft.Extensions.Hosting.Abstractions": {
               "target": "Package",
-              "version": "[6.0.0, )"
+              "version": "[8.0.0, )"
             },
             "Microsoft.Extensions.Logging": {
               "target": "Package",
-              "version": "[6.0.0, )"
+              "version": "[8.0.0, )"
             },
             "Microsoft.Graph.Core": {
               "target": "Package",
-              "version": "[2.0.8, )"
+              "version": "[3.1.13, )"
             },
             "MySql.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[5.0.17, )"
+              "version": "[8.0.5, )"
             },
             "Newtonsoft.json": {
               "target": "Package",
-              "version": "[13.0.1, )"
+              "version": "[13.0.3, )"
             },
             "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",
-              "version": "[5.0.4, )"
+              "version": "[8.0.2, )"
             },
             "QRCoder": {
               "target": "Package",
-              "version": "[1.4.3, )"
+              "version": "[1.6.0, )"
             },
             "RestSharp": {
               "target": "Package",
-              "version": "[107.3.0, )"
+              "version": "[111.4.0, )"
             },
             "SendGrid": {
               "target": "Package",
-              "version": "[9.27.0, )"
+              "version": "[9.29.3, )"
             },
             "System.Data.SqlClient": {
               "target": "Package",
@@ -165,19 +154,19 @@
             },
             "System.Text.Json": {
               "target": "Package",
-              "version": "[6.0.4, )"
+              "version": "[8.0.4, )"
             },
             "Twilio": {
               "target": "Package",
-              "version": "[5.75.0, )"
+              "version": "[7.2.2, )"
             },
             "itext7": {
               "target": "Package",
-              "version": "[7.2.2, )"
+              "version": "[8.0.4, )"
             },
             "itextsharp": {
               "target": "Package",
-              "version": "[5.5.13.3, )"
+              "version": "[5.5.13.4, )"
             }
           },
           "imports": [
@@ -196,7 +185,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

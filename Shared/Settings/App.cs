@@ -36,6 +36,23 @@ namespace ArmsFW.Services.Shared.Settings
 		public static string ConnectionString => AppSettings.ConnectionString;
         public static string MySqlConnectionString => App.Config.Get($"ConnectionStrings:mysql");
         public static string EfContext => App.Config.Get($"EFConfig:Tipo");
+
+        public static bool HostHomologacao(string url)
+        {
+            string termos = App.Config.Get($"AppSettings:TermosHomologacao");
+
+            var arrTermos = termos.Split(",").ToList();
+
+            foreach (var termo in arrTermos)
+            {
+                if (url.Contains(termo))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public static AppSettings Config => AppSettings.Instance;
 
 		public static Config Configuracoes

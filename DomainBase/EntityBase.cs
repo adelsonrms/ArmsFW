@@ -9,19 +9,45 @@ namespace ArmsFW.Domain
 	public class EntityBase : EntityBase<object>
 	{
 	}
-	public class EntityBase<T> : RowTracking, IEFEntity
+	public class EntityBase<T> : IEFEntity
 	{
-		[Key]
-		[Column("id")]
-		public int Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key]
+        [Column("id")]
+        public int Id { get; set; }
 
-		[Ignore]
 		[NotMapped]
 		public string EFGuid { get; set; }
-		public string usr_criacao { get; set; }
-		public DateTime? dt_criacao { get; set; }
 
-		internal static T Criar()
+        [Column("UsuarioCriacao")]
+        public string UsuarioCriacao { get; set; }
+
+        [Column("DataCriacao")]
+        public DateTime? Criacao { get; set; }
+
+        [Column("UsuarioAtualizacao")]
+        public string UsuarioAtualizacao { get; set; }
+
+        [Column("DataAtualizacao")]
+        public DateTime? Atualizacao { get; set; }
+
+        [Column("Historico")]
+        public string HistoricoDeAlteracao { get; set; }
+
+        
+        [Column("Opcoes")]
+        public string Opcoes { get; set; }
+
+        [NotMapped]
+        public Situacao Situacao { get; set; }
+
+        public bool Exists()
+        {
+            return Id != 0;
+        }
+
+
+        internal static T Criar()
 		{
 			return Activator.CreateInstance<T>();
 		}
