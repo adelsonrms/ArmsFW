@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\data\\dev\\source\\github\\ArmsFW\\ArmsFW.csproj": {}
+    "C:\\UserData\\OneDrive\\source\\adelsonrms\\ArmsFW\\ArmsFW.csproj": {}
   },
   "projects": {
-    "C:\\data\\dev\\source\\github\\ArmsFW\\ArmsFW.csproj": {
-      "version": "2.2023.603.1",
+    "C:\\UserData\\OneDrive\\source\\adelsonrms\\ArmsFW\\ArmsFW.csproj": {
+      "version": "3.8.0",
       "restore": {
-        "projectUniqueName": "C:\\data\\dev\\source\\github\\ArmsFW\\ArmsFW.csproj",
+        "projectUniqueName": "C:\\UserData\\OneDrive\\source\\adelsonrms\\ArmsFW\\ArmsFW.csproj",
         "projectName": "ArmsFW",
-        "projectPath": "C:\\data\\dev\\source\\github\\ArmsFW\\ArmsFW.csproj",
-        "packagesPath": "C:\\Users\\adelson\\.nuget\\packages\\",
-        "outputPath": "C:\\data\\dev\\source\\github\\ArmsFW\\obj\\",
+        "projectPath": "C:\\UserData\\OneDrive\\source\\adelsonrms\\ArmsFW\\ArmsFW.csproj",
+        "packagesPath": "C:\\Users\\adm\\.nuget\\packages\\",
+        "outputPath": "C:\\UserData\\OneDrive\\source\\adelsonrms\\ArmsFW\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\adelson\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\adm\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -70,6 +70,10 @@
               "target": "Package",
               "version": "[7.2.1, )"
             },
+            "Microsoft.AspNetCore.Http": {
+              "target": "Package",
+              "version": "[2.2.2, )"
+            },
             "Microsoft.AspNetCore.Identity": {
               "target": "Package",
               "version": "[2.2.0, )"
@@ -81,6 +85,10 @@
             "Microsoft.AspNetCore.Identity.UI": {
               "target": "Package",
               "version": "[8.0.7, )"
+            },
+            "Microsoft.AspNetCore.Mvc": {
+              "target": "Package",
+              "version": "[2.2.0, )"
             },
             "Microsoft.AspNetCore.Mvc.ViewFeatures": {
               "target": "Package",
@@ -148,6 +156,14 @@
               "target": "Package",
               "version": "[9.29.3, )"
             },
+            "Swashbuckle.AspNetCore.SwaggerGen": {
+              "target": "Package",
+              "version": "[6.9.0, )"
+            },
+            "Swashbuckle.AspNetCore.SwaggerUI": {
+              "target": "Package",
+              "version": "[6.9.0, )"
+            },
             "System.Data.SqlClient": {
               "target": "Package",
               "version": "[4.8.6, )"
@@ -185,7 +201,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

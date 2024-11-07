@@ -4,15 +4,20 @@
     <TargetFramework>net8.0</TargetFramework>
     <AssemblyName>ArmsFW</AssemblyName>
     <RootNamespace>ArmsFW</RootNamespace>
-    <Version>2.2023.0603.1</Version>
+    <Version>3.8.0</Version>
     <Authors>Adelson RM Silva</Authors>
-    <Description>Versão do framework ArmsFW atualizado para Net 7.0 - v3</Description>
-    <Copyright>ARMS 2023</Copyright>
+    <Description>Versão do framework ArmsFW atualizado para Net 8.0</Description>
+    <Copyright>ARMS 2024</Copyright>
     <PackageProjectUrl>https://github.com/adelsonrms/armsfw</PackageProjectUrl>
     <RepositoryUrl>https://github.com/adelsonrms/armsfw</RepositoryUrl>
     <RepositoryType>Github</RepositoryType>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Title>ARMS FW - Funcionalidades</Title>
+    <PackAsTool>True</PackAsTool>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <Configurations>Debug;Release;Nuget</Configurations>
+    <Platforms>AnyCPU;x86</Platforms>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -21,9 +26,32 @@
     <Optimize>False</Optimize>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <OutputPath />
+    <NoWarn>ASP0019;MSB3277;1701;1702;CS1998;CS4014;CS0162;SYSLIB0051;CS0168;NU1701;NU1903;CS0108;CS0618;CS0219;CS0169</NoWarn>
+    <Optimize>False</Optimize>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>C:\vs\armsfw\release\</OutputPath>
+    <OutputPath>C:\UserData\OneDrive\Release\ArmsFW\</OutputPath>
     <NoWarn>ASP0019;MSB3277;1701;1702;CS1998;CS4014;CS0162;SYSLIB0051;CS0168;NU1701;NU1903;CS0108;CS0618;CS0219</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <OutputPath>C:\UserData\OneDrive\Release\ArmsFW\</OutputPath>
+    <NoWarn>ASP0019;MSB3277;1701;1702;CS1998;CS4014;CS0162;SYSLIB0051;CS0168;NU1701;NU1903;CS0108;CS0618;CS0219</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Nuget|AnyCPU'">
+    <OutputPath>C:\UserData\OneDrive\Release\ArmsFW\</OutputPath>
+    <NoWarn>ASP0019;MSB3277;1701;1702;CS1998;CS4014;CS0162;SYSLIB0051;CS0168;NU1701;NU1903;CS0108;CS0618;CS0219</NoWarn>
+    <Optimize>True</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Nuget|x86'">
+    <OutputPath>C:\UserData\OneDrive\Release\ArmsFW\</OutputPath>
+    <NoWarn>ASP0019;MSB3277;1701;1702;CS1998;CS4014;CS0162;SYSLIB0051;CS0168;NU1701;NU1903;CS0108;CS0618;CS0219</NoWarn>
+    <Optimize>True</Optimize>
   </PropertyGroup>
 
   <ItemGroup>
@@ -89,6 +117,13 @@
 
   <ItemGroup>
     <Folder Include="Email\Azure\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\Downloads\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
