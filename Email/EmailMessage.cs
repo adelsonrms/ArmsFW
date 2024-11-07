@@ -20,8 +20,8 @@ namespace ArmsFW.Services.Email
 
 		public EmailMessage ConfiguraVariaveis(StringList variaveis, string tags)
 		{
-			Corpo = EmailService.ConfiguraVariaveis(Corpo, variaveis);
-			Assunto = EmailService.ConfiguraVariaveis(Assunto, variaveis);
+			Corpo = NotificationService.ConfiguraVariaveis(Corpo, variaveis);
+			Assunto = NotificationService.ConfiguraVariaveis(Assunto, variaveis);
 			return this;
 		}
 

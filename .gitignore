@@ -1,5 +1,48 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
+﻿# IDE settings
+.vs/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
 
-/.gitattributes
+# Build results
+bin/
+obj/
+out/
+
+# Logs
+*.log
+*.tlog
+
+# Auto-generated files
+*.vspscc
+*.vssscc
+.vscode/
+
+# Packages
+packages/
+*.nupkg
+*.snupkg
+*.nuspec
+*.dll
+*.pdb
+
+# Web-specific
+wwwroot/node_modules/
+wwwroot/lib/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# User-specific files
+*.rsuser
+*.sln.iml
+
+# OS-generated files
+Thumbs.db
+*.DS_Store
+
+# Rider settings
+.idea/
+*.sln.iml

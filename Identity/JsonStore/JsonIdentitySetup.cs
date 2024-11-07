@@ -48,8 +48,8 @@ namespace ArmsFW.Infra.Identity
             //services.AddTransient<IAccountManager<JsonIdentityUser>, AccountManager<JsonIdentityUser>>();
             //services.AddTransient<ILoginService, LoginService>();
             
-            services.AddTransient<IEmailSender, EmailService>();
-            services.AddTransient<ISmsSender, EmailService>();
+            services.AddTransient<IEmailSender, NotificationService>();
+            services.AddTransient<ISmsSender, NotificationService>();
 
             return services;
         }

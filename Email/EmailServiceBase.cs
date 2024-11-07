@@ -62,7 +62,7 @@ namespace ArmsFW.Services.Email
         {
             try
             {
-                using (var ms = new EmailService())
+                using (var ms = new NotificationService())
                 {
                     Task.FromResult(ms.SendEmailAsync(para, assunto, corpo));
                 }
@@ -147,7 +147,7 @@ namespace ArmsFW.Services.Email
 
         public static string CarregarEstiloCss(string arquivo)
         {
-            var conteudo = EmailService.CarregarTemplateDeEmail(arquivo + ".css");
+            var conteudo = NotificationService.CarregarTemplateDeEmail(arquivo + ".css");
 
             if (!string.IsNullOrEmpty(conteudo))
             {
@@ -166,7 +166,7 @@ namespace ArmsFW.Services.Email
 
             string mensagem = "";
             DtFim = DateTime.Now;
-            EmailService.Sending = false;
+            NotificationService.Sending = false;
 
             LogServices.Debug($"Smtp_SendCompleted() - ID de Envio : {LogId} : Um envio de email foi concluído ! Consultando o report enviado pelo SmtpClient...");
 

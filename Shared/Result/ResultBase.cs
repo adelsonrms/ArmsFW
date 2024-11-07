@@ -8,7 +8,11 @@ namespace ArmsFW.Services.Shared
     /// </summary>
     public abstract class ResultBase : ResultBase<object>
     {
-		public static ActionResult<ResultResponse> CriarResponseOK(string message = "", dynamic data = null) => CriarResponse(message, data, 200);
+        public static ActionResult<ResultResponse> Ok(string message = "", dynamic data = null) => CriarResponseOK(message, data);
+        public static ActionResult<ResultResponse> Created(string message = "", dynamic data = null) => CriarResponseCriado(message, data);
+        public static ActionResult<ResultResponse> BadRequest(string message = "", dynamic data = null) => CriarResponseErroAplicacao(message, data);
+
+        public static ActionResult<ResultResponse> CriarResponseOK(string message = "", dynamic data = null) => CriarResponse(message, data, 200);
 		public static ActionResult<ResultResponse> CriarResponseErro(string message = "", dynamic data = null) => ErroResult(message, data, 200);
 
 		public static ActionResult<ResultResponse> CriarResponseCriado(string message = "", dynamic data = null) => CriarResponse(message, data, 201);

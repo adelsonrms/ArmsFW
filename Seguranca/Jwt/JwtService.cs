@@ -50,9 +50,8 @@ namespace ArmsFW.Security
             //Atualiza a lista de blacklist
             CarregarBlackList();
         }
-
-
-
+         
+        public TokenValidationParameters parametrosDoToken { get; set; } = new TokenValidationParameters();
 
         /// <summary>
         /// Dado a instancia de um Principal (Identidade), gera um token JWT apos a validação das credencias passando as suas Claims
@@ -91,7 +90,6 @@ namespace ArmsFW.Security
                 //var secToken = tokenHandler.CreateToken(tokenDescriptor);
                 #endregion
 
-
                 //Monta as informações do token
                 JwtSecurityToken token = new JwtSecurityToken(
                    issuer: _settings.ValidIssuer,
@@ -122,46 +120,6 @@ namespace ArmsFW.Security
             return await Task.FromResult(tokenGerado);
         }
 
-        private static void MontaPayload(IEnumerable<Claim> userClaims, string userName, out List<Claim> claims, out DateTime expiration)
-        {
-            //Claims (dados) do usuario no token
-            claims = new List<Claim>
-                {
-                    new Claim(JwtRegisteredClaimNames.UniqueName, (userName?? "")),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim("DtEmissao", DateTime.Now.ToString()),
-                    new Claim("AppEmissor", "ArmsFW")
-                };
-
-            var validade_recorrencia = userClaims?.FirstOrDefault(x => x.Type == "Validade.Recorrencia")?.Value;
-            var validade_valor = userClaims?.FirstOrDefault(x => x.Type == "Validade.Valor")?.Value;
-
-            if (string.IsNullOrEmpty(validade_valor)) validade_valor = "1";
-
-            //Gera o dia de expiracao a partir de hj
-            switch (validade_recorrencia)
-            {
-                case "mes": expiration = DateTime.Now.AddMonths(validade_valor.ToInt()); break;
-                case "ano": expiration = DateTime.Now.AddYears(validade_valor.ToInt()); break;
-                default: expiration = DateTime.Now.AddDays(validade_valor.ToInt()); break;
-            }
-
-            //Demais claims do usuário
-            claims.Add(new Claim("DtExpiracao", $"{expiration}"));
-            claims.AddRange(userClaims);
-        }
-
-        private SigningCredentials GerarCredencial(string secret)
-        {
-            //Chave de encriptação (Senha)
-            var keyCripto = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret));
-
-            //Credenciais
-            var credenciais = new SigningCredentials(keyCripto, SecurityAlgorithms.HmacSha256Signature);
-
-            return credenciais;
-        }
-
         public JwtToken Decodificar(string token)
         {
             var tokenGerado = new JwtToken();
@@ -177,29 +135,6 @@ namespace ArmsFW.Security
 
             var validator = new JwtSecurityTokenHandler();
 
-            //var key = Encoding.ASCII.GetBytes(_settings.Secret!);
-
-            //validator.ValidateToken(token, new TokenValidationParameters
-            //{
-            //    ValidateIssuerSigningKey = false,
-            //    IssuerSigningKey = new SymmetricSecurityKey(key),
-            //    ValidateIssuer = false,
-            //    ValidateAudience = false,
-            //    // set clockskew to zero so tokens expire exactly at token expiration time (instead of 5 minutes later)
-            //    ClockSkew = TimeSpan.Zero
-            //}, out SecurityToken validatedToken);
-
-
-            //Parametros usados na geração do token. Tem que ser os mesmos
-            TokenValidationParameters parametrosDoToken = new TokenValidationParameters();
-            parametrosDoToken.IssuerSigningKey = key;
-            parametrosDoToken.ValidateIssuer = tokenConfig.ValidateIssuer;
-            parametrosDoToken.ValidateIssuerSigningKey = true;
-            parametrosDoToken.ValidIssuer = tokenConfig.ValidIssuer;
-
-            parametrosDoToken.ValidAudiences = tokenConfig.ValidAudiences;
-            parametrosDoToken.ValidAudience = tokenConfig.ValidAudience;
-            parametrosDoToken.ValidateAudience = tokenConfig.ValidateAudience;
 
             //Garante que a string seja de um Jwt Token valido
             if (validator.CanReadToken(token))
@@ -208,7 +143,7 @@ namespace ArmsFW.Security
                 try
                 {
                     // Identifica o Principal associado ao token
-                    principal = validator.ValidateToken(token, parametrosDoToken, out validatedToken);
+                    principal = validator.ValidateToken(token, GetTokenValidationParameters(), out validatedToken);
 
                     // Verifica se há a claim
                     var t = validator.ReadJwtToken(token);
@@ -270,6 +205,46 @@ namespace ArmsFW.Security
             return tokenGerado;
         }
 
+        private static void MontaPayload(IEnumerable<Claim> userClaims, string userName, out List<Claim> claims, out DateTime expiration)
+        {
+            //Claims (dados) do usuario no token
+            claims = new List<Claim>
+                {
+                    new Claim(JwtRegisteredClaimNames.UniqueName, (userName?? "")),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim("DtEmissao", DateTime.Now.ToString()),
+                    new Claim("AppEmissor", "ArmsFW")
+                };
+
+            var validade_recorrencia = userClaims?.FirstOrDefault(x => x.Type == "Validade.Recorrencia")?.Value;
+            var validade_valor = userClaims?.FirstOrDefault(x => x.Type == "Validade.Valor")?.Value;
+
+            if (string.IsNullOrEmpty(validade_valor)) validade_valor = "1";
+
+            //Gera o dia de expiracao a partir de hj
+            switch (validade_recorrencia)
+            {
+                case "mes": expiration = DateTime.Now.AddMonths(validade_valor.ToInt()); break;
+                case "ano": expiration = DateTime.Now.AddYears(validade_valor.ToInt()); break;
+                default: expiration = DateTime.Now.AddDays(validade_valor.ToInt()); break;
+            }
+
+            //Demais claims do usuário
+            claims.Add(new Claim("DtExpiracao", $"{expiration}"));
+            claims.AddRange(userClaims);
+        }
+
+        private SigningCredentials GerarCredencial(string secret)
+        {
+            //Chave de encriptação (Senha)
+            var keyCripto = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret));
+
+            //Credenciais
+            var credenciais = new SigningCredentials(keyCripto, SecurityAlgorithms.HmacSha256Signature);
+
+            return credenciais;
+        }
+
         private bool EstaNaBlackList(string token) => this.BlackList.Any(t => t.Token == token);
 
         public List<TokenBlackList> CarregarBlackList()
@@ -328,6 +303,24 @@ namespace ArmsFW.Security
             if (File.Exists(BlackListStore)) File.Delete(BlackListStore);
 
             File.WriteAllText(BlackListStore, tokenBlackLists.ToJson());
+        }
+
+        public TokenValidationParameters GetTokenValidationParameters()
+        {
+            var tokenConfig = _settings;
+
+            var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(tokenConfig.Secret));
+
+            parametrosDoToken.IssuerSigningKey = key;
+            parametrosDoToken.ValidateIssuer = tokenConfig.ValidateIssuer;
+            parametrosDoToken.ValidateIssuerSigningKey = true;
+            parametrosDoToken.ValidIssuer = tokenConfig.ValidIssuer;
+
+            parametrosDoToken.ValidAudiences = tokenConfig.ValidAudiences;
+            parametrosDoToken.ValidAudience = tokenConfig.ValidAudience;
+            parametrosDoToken.ValidateAudience = tokenConfig.ValidateAudience;
+
+            return parametrosDoToken;
         }
     }
 }

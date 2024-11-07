@@ -129,7 +129,7 @@ namespace ArmsFW.Services.Email
                 try
                 {
 
-                    EmailService.Sending = true;
+                    NotificationService.Sending = true;
 
                     //Dispara o envio...
                     await GravarLog($"AzureServiceEmailClient > Envia a mensagem....");
@@ -257,7 +257,7 @@ namespace ArmsFW.Services.Email
 
         public static string CarregarEstiloCss(string arquivo)
         {
-            var conteudo = EmailService.CarregarTemplateDeEmail(arquivo + ".css");
+            var conteudo = NotificationService.CarregarTemplateDeEmail(arquivo + ".css");
 
             if (!string.IsNullOrEmpty(conteudo))
             {

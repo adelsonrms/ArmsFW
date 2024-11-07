@@ -25,6 +25,13 @@ namespace ArmsFW.Security
 
         public List<string> Perfil { get; set; }
     }
+
+    public class Account
+    {
+        public string Id { get; set; } = string.Empty;
+        public string Nome { get; set; }
+        public string Type { get; set; }
+    }
 }
 
 

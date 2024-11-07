@@ -12,6 +12,7 @@ using System.ComponentModel;
 using ArmsFW.Core;
 using ArmsFW.Core.Types;
 using System.Reflection;
+using Azure.Communication.Email;
 
 namespace ArmsFW.Services.Email
 {
@@ -20,12 +21,12 @@ namespace ArmsFW.Services.Email
         De, Para, ComCopia, ComCopiaOculta
     }
 
-    public class EmailService : IEmailSender, ISmsSender, IDisposable
+    public class NotificationService : IEmailSender, ISmsSender, IDisposable
     {
         public static bool Sending { get; set; }
 
         #region Propriedados do Email
-        private readonly SmtpClient _smtpClient;
+        private SmtpClient _smtpClient;
 
         private string _destination, _subject, _body, _cc, _cco, _logFile;
         public string Destionation { get => this._destination; set => this._destination = value; }
@@ -57,7 +58,7 @@ namespace ArmsFW.Services.Email
         /// Inicializa a classe com as configurações via Injação de Dependencia
         /// </summary>
         /// <param name="emailSettings">Opções Recebido via ConfigureServices do appsettings</param>
-        public EmailService(IOptions<NotificacaoOptions> emailSettings) : this()
+        public NotificationService(IOptions<NotificacaoOptions> emailSettings) : this()
         {
             if (emailSettings.Value.NotificacaoProviders?.Count>0)
             {
@@ -66,7 +67,7 @@ namespace ArmsFW.Services.Email
             }
         }
 
-        public EmailService()
+        public NotificationService()
         {
             this.LogFile = $@"{Aplicacao.Diretorio}\_logs\log.json";
             var notificacaoOptios = AppSettings.GetSection<NotificacaoOptions>("NotificacaoOptions") ?? new NotificacaoOptions { NotificacaoProviders  = new System.Collections.Generic.List<NotificacaoProvider>()};
@@ -83,7 +84,15 @@ namespace ArmsFW.Services.Email
             if (_mailSettings != null)
             {
                 _smtpClient = new SmtpClient(_mailSettings.Host, _mailSettings.Port);
+
                 this.OnCompleted += this.Smtp_SendCompleted;
+            }
+            else
+            {
+                LogServices.GravarLog(
+                  "Não há configurações de envio de emails para a aplicação. Verifique o AppSettings",
+                  $"({Assembly.GetCallingAssembly().ManifestModule.Name}) > {this.GetType().FullName}"
+              );
             }
         }
 
@@ -91,7 +100,7 @@ namespace ArmsFW.Services.Email
         {
             try
             {
-                using (var ms = new EmailService())
+                using (var ms = new NotificationService())
                 {
                     Task.FromResult(ms.SendEmailAsync(para, assunto, corpo));
                 }
@@ -110,6 +119,22 @@ namespace ArmsFW.Services.Email
         /// <returns></returns>
         public async Task<EmailResponse> SendEmailAsync(EmailRequest mailRequest)
         {
+
+            if (_mailSettings==null)
+            {
+                var retorno = 
+                new EmailResponse
+                {
+                    MensagemEnviada = mailRequest,
+                    Mensagem = $"Não foi encontradas as configurações de envio de emails no AppSettings...",
+                    Status = false
+                };
+
+                await GravarLog(retorno.Mensagem);
+
+                return retorno;
+            }
+            
             MailMessage message = null;
 
             DtInicio = DateTime.Now;
@@ -135,66 +160,76 @@ namespace ArmsFW.Services.Email
 
                 message.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
 
-                #region Configuração do Cliente de Envio SmtpClient
-                _smtpClient.EnableSsl = _mailSettings.UseSsl;
-                _smtpClient.UseDefaultCredentials = false;
-                _smtpClient.Credentials = new NetworkCredential(_mailSettings.Sender, _mailSettings.Password);
-                _smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
-                #endregion
-
-                //Registra os eventos
-                //Evento requisitado pelo cliente
-                if (mailRequest.OnCompleted != null) this.OnCompleted += mailRequest.OnCompleted;
-
-                _smtpClient.SendCompleted -= this.OnCompleted;
-
-                //Evento interno do serviço
-                if (this.OnCompleted != null) _smtpClient.SendCompleted += this.OnCompleted;
-
-                var callbackResponse = new EmailResponse
+                using (_smtpClient = new SmtpClient(_mailSettings.Host, _mailSettings.Port))
                 {
-                    MensagemEnviada = mailRequest,
-                    Data = message,
-                    Mensagem = "Enviado..",
-                    Status = false
-                };
+                    #region Configuração do Cliente de Envio SmtpClient
+                    _smtpClient.EnableSsl = _mailSettings.UseSsl;
+                    _smtpClient.UseDefaultCredentials = false;
+                    _smtpClient.Credentials = new NetworkCredential(_mailSettings.Sender, _mailSettings.Password);
+                    _smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    #endregion
 
-                try
-                {
+                    //var secureSocketOptions = SecureSocketOptions.None;
+                    //_smtpClient.Connect(_mailSettings.Host, _mailSettings.Port, secureSocketOptions);
+                    
 
-                    EmailService.Sending = true;
+                    //Registra os eventos
+                    //Evento requisitado pelo cliente
+                    if (mailRequest.OnCompleted != null) this.OnCompleted += mailRequest.OnCompleted;
 
-                    //Dispara o envio...
-                    await GravarLog($"SmtpClient > Envia a mensagem....");
-                    await GravarLog($"****************************************************************");
-                    //await GravarLog($"Email Config        : {new { _mailSettings.Host, _mailSettings.Port, UserSender = $"{_mailSettings.DisplayName} - {_mailSettings.UserMailSender}", SSL = _mailSettings.UseSsl }.ToJson(false)}");
-                    await GravarLog($"AppSetting Config        : Host:{ _mailSettings.Host}, Porta: {_mailSettings.Port}, UserSender = {_mailSettings.DisplayName} - {_mailSettings.Sender}, SSL : {_mailSettings.UseSsl}");
-                    await GravarLog($"SmtpClient Config        : Host:{ _smtpClient.Host}, Porta: {_smtpClient.Port}, Servidor: {_smtpClient.ServicePoint.Address} , SSL : {_smtpClient.EnableSsl}");
+                    _smtpClient.SendCompleted -= this.OnCompleted;
 
-                    await GravarLog($"****************************************************************");
+                    //Evento interno do serviço
+                    if (this.OnCompleted != null) _smtpClient.SendCompleted += this.OnCompleted;
 
-                    _smtpClient.SendAsync(message, callbackResponse);
-
-                    await GravarLog($"SmtpClient.SendAsync() > Solicitação de envio concluído....");
-
-
-                    if (EmailService.Sending)
+                    var callbackResponse = new EmailResponse
                     {
-                        await GravarLog($"Aguardando finalização do envio.");
+                        MensagemEnviada = mailRequest,
+                        Data = message,
+                        Mensagem = "Enviado..",
+                        Status = false
+                    };
+
+                    try
+                    {
+
+                        NotificationService.Sending = true;
+
+                        //Dispara o envio...
+                        await GravarLog($"SmtpClient > Envia a mensagem....");
+                        await GravarLog($"****************************************************************");
+                        //await GravarLog($"Email Config        : {new { _mailSettings.Host, _mailSettings.Port, UserSender = $"{_mailSettings.DisplayName} - {_mailSettings.UserMailSender}", SSL = _mailSettings.UseSsl }.ToJson(false)}");
+                        await GravarLog($"AppSetting Config        : Host:{_mailSettings.Host}, Porta: {_mailSettings.Port}, UserSender = {_mailSettings.DisplayName} - {_mailSettings.Sender}, SSL : {_mailSettings.UseSsl}");
+                        await GravarLog($"SmtpClient Config        : Host:{_smtpClient.Host}, Porta: {_smtpClient.Port}, Servidor: {_smtpClient.ServicePoint.Address} , SSL : {_smtpClient.EnableSsl}");
+
+                        await GravarLog($"****************************************************************");
+
+                        _smtpClient.SendAsync(message, callbackResponse);
+
+                        await GravarLog($"SmtpClient.SendAsync() > Solicitação de envio concluído....");
+
+
+                        if (NotificationService.Sending)
+                        {
+                            await GravarLog($"Aguardando finalização do envio.");
+                        }
+
+                        //Aguandando outro envio...
+                        while (NotificationService.Sending) { }
+
+                        await GravarLog($"SmtpClient.SendAsync() > Concluído !");
+                    }
+                    catch (Exception e)
+                    {
+                        GravarLog($"|erro|Falha ao enviar o comando _smtpClient.SendMailAsync() : {e.Source} - {e.Message}");
                     }
 
-                    //Aguandando outro envio...
-                    while (EmailService.Sending) { }
+                    await GravarLog($"SmtpClient > Envio da mensagem concluída !. Aguardando o report do serviço em Smtp_SendCompleted()");
 
-                    await GravarLog($"SmtpClient.SendAsync() > Concluído !");
-                }
-                catch (Exception e)
-                {
-                    GravarLog($"|erro|Falha ao enviar o comando _smtpClient.SendMailAsync() : {e.Source} - {e.Message}");
-                }
+                    //_smtpClient.Disconnect(true);
+                    return callbackResponse;
 
-                await GravarLog($"SmtpClient > Envio da mensagem concluída !. Aguardando o report do serviço em Smtp_SendCompleted()");
-                return callbackResponse;
+                }
             }
             catch (Exception e)
             {
@@ -330,7 +365,7 @@ namespace ArmsFW.Services.Email
 
             string mensagem = "";
             DtFim = DateTime.Now;
-            EmailService.Sending = false;
+            NotificationService.Sending = false;
 
             LogServices.Debug($"Smtp_SendCompleted() - ID de Envio : {LogId} : Um envio de email foi concluído ! Consultando o report enviado pelo SmtpClient...");
 
@@ -431,7 +466,7 @@ namespace ArmsFW.Services.Email
 
         public static string CarregarEstiloCss(string arquivo)
         {
-            var conteudo = EmailService.CarregarTemplateDeEmail(arquivo + ".css");
+            var conteudo = NotificationService.CarregarTemplateDeEmail(arquivo + ".css");
 
             if (!string.IsNullOrEmpty(conteudo))
             {

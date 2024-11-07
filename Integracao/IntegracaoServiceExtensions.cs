@@ -37,7 +37,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.Configure<NotificacaoOptions>(configuration.GetSection("NotificacaoOptions"));
 
             //services.AddScoped<INotificacaoService, NotificacaoService>();
-            services.AddScoped<IEmailSender, EmailService>();
+            services.AddScoped<IEmailSender, NotificationService>();
             services.AddScoped<AzureEmailService, AzureEmailService>();
 
 
