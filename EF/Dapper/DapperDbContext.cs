@@ -40,7 +40,7 @@ namespace ArmsFW.Infra.Data
 		{
 			return new SqlConnectionStringBuilder(connectionString)
 			{
-				ApplicationName = "TECNUN - Portal Web App",
+				ApplicationName = "Arms FW Utils",
 				ConnectRetryCount = 5,
 				CurrentLanguage = "english",
 				ConnectRetryInterval = 5,
@@ -101,13 +101,13 @@ namespace ArmsFW.Infra.Data
 			}
 			catch(Exception ex)
 			{
-				App.GravarLog($"Ocorreu uma falha na inicialização da conexão", "DapperDbContext.Connect()", "db.txt");
+				App.GravarLog($"Ocorreu uma falha na inicializaï¿½ï¿½o da conexï¿½o", "DapperDbContext.Connect()", "db.txt");
 				App.GravarLog($"Excessao > {ex.ColetarMensagensPilhaExceptions()}", "DapperDbContext.Connect()", "db.txt");
 
 				_cnn = null;
 			}
 
-			App.GravarLog($"Não foi possivel inicializar a conexao com o DB", "DapperDbContext.Connect()", "db.txt");
+			App.GravarLog($"Nï¿½o foi possivel inicializar a conexao com o DB", "DapperDbContext.Connect()", "db.txt");
 			return null;
 		}
 
