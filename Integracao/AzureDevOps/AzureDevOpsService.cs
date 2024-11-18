@@ -86,8 +86,6 @@ namespace ArmsFW.Integracao.DevOps
 
             try
             {
-
-                //Lista Exemplo: Clientes : https://dev.azure.com/tecnun/_apis/work/processes/lists/a9cff423-4110-4df0-9671-94bfd81e8ede
                 Uri url = MontarUriRest($"/_apis/work/processes/lists/{idLista}");
 
                 using (var http = IniciarRequisicao())

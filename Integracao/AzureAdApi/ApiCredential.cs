@@ -74,22 +74,12 @@ namespace ArmsFW.Services.Azure
 
 		public ApiCredential()
 		{
-			//APP 1: 
-			//ID		: ac6aad15-111e-4f79-a816-64c85dba0736
-			//Secret	: pzmLMTIM8_%hjiyXH6615^_ (YS1ULwywjQHcC05xYoYuExHvq8lR+LSKiR9lIcn1sCo=)
-
-			//APP 2: (nao habilita para obter informações da photo)
-			//ID		: 8d4148ed-6766-40a5-9c43-d4889bb82c1c
-			//Secret	: w8~QR1fu5.wVQ1XIKZ.GO.A2-gvPGq4w-Z (Crypto : UG1BtlHZmE3wRfym0Y4cBO2LFHkSHW05oXd724W38kZ0ie/emIVKMWVWMzXK5g17)
-
-
 			Id = Guid.NewGuid().ToString();
-			AppId = "ac6aad15-111e-4f79-a816-64c85dba0736";//"8d4148ed-6766-40a5-9c43-d4889bb82c1c";
-			EncryptSecret = "YS1ULwywjQHcC05xYoYuExHvq8lR+LSKiR9lIcn1sCo="; //Chave de Segredo decriptado : "w8~QR1fu5.wVQ1XIKZ.GO.A2-gvPGq4w-Z";
+			AppId = "";
+			EncryptSecret = "";
 			Scopes = "https://graph.microsoft.com/.default";
 			Grant_Type = "client_credentials";
-			//Resoruce = "https://tecnuntecnologia.sharepoint.com";
-			TenanId = "tecnun.com.br";
+			TenanId = "empresa.com.br";
 		}
 
 		public ApiCredential(string appId, string appSecret)

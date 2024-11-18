@@ -256,13 +256,13 @@ namespace ArmsFW.Services.Azure
                 else
                 {
 					var queryString = $"";
-					string text = "client_id=ac6aad15-111e-4f79-a816-64c85dba0736";
+					string text = "client_id=";
 					text = text + "&grant_type=password";
-					text = text + "&client_secret=pzmLMTIM8_%hjiyXH6615^_";
+					text = text + "&client_secret=";
 					text = text + "&scope=https://graph.microsoft.com/.default";
 					text = text + "&username=" + userId + "&password=" + password;
 
-					var response = await WebClient.PostAsync($"https://login.microsoftonline.com/tecnun.com.br/oauth2/v2.0/token", payload: text);
+					var response = await WebClient.PostAsync($"https://login.microsoftonline.com/{this.TenantId}/oauth2/v2.0/token", payload: text);
 					var token = response.Conteudo;
 
 					File.WriteAllText(tokenFile, token);
@@ -278,7 +278,7 @@ namespace ArmsFW.Services.Azure
 
 		private string GetAccessTokenUrl(ApiCredential appClient)
 		{
-			return $"https://login.microsoftonline.com/tecnun.com.br/oauth2/token";
+			return $"https://login.microsoftonline.com/{appClient.TenanId}/oauth2/token";
 		}
 
 		internal string QueryString

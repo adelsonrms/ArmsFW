@@ -185,8 +185,8 @@ namespace ArmsFW.Services.PDF
 
                     var pdfcpy = new PdfCopy(doc, newPDF);
 
-                    doc.AddAuthor("Adelson RM Silva");
-                    doc.AddCreator("TECNUN PDF Extractor");
+                    doc.AddAuthor("Arms FW");
+                    doc.AddCreator("Arms FW PDF Extractor");
                     doc.AddCreationDate();
                     doc.AddKeywords($"PG|{i}, Arquivo|{pdfFullPath}, UltimaPagina|{i == reader.NumberOfPages}");
 

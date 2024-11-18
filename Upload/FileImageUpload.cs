@@ -1,4 +1,4 @@
-namespace Tecnun.Portal.UI.Web.Bussines.Api
+namespace Web.Api
 {
 	public class FileImageUpload
 	{
